@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+<mule
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
 	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
-http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
-	
-	<http:listener-config
-		name="super-ticket-papi-httpListenerConfig">
-		<http:listener-connection
-			host="0.0.0.0"
-			port="${http.port}" />
-	</http:listener-config>
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<global-property
+		doc:name="Global Property"
+		doc:id="ca9a6a14-70af-451d-9571-e8d922955211"
+		name="mule.env"
+		value="stg" />
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="18fe3bac-a070-4b88-b604-188bb489364e"
+		file="properties/${mule.env}-config.yaml" />
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="f0bcee27-2c7b-4815-9067-c4a0ce6980c8"
+		file="properties/config.yaml" />
+
 	<apikit:config
 		name="super-ticket-papi-config"
 		api="resource::aaff385a-5729-4e77-aafd-6e20328499b7:p-super-ticket-api:1.0.0:oas:zip:super-ticket-papi.yaml"
 		outboundHeadersMapName="outboundHeaders"
 		httpStatusVarName="httpStatus" />
-	<api-gateway:autodiscovery
-		apiId="${api.instanceId}"
-		ignoreBasePath="true"
-		doc:name="API Autodiscovery"
-		doc:id="fbd695c4-0920-4331-8837-4e387af2038f"
-		flowRef="api-main" />
-	<global-property doc:name="Global Property" doc:id="25e3c590-2102-4af0-a5a2-87ab7eecf7f3" name="env" value="stg" />
-	<configuration-properties doc:name="Configuration properties" doc:id="4ee33ee3-54cd-4e11-8f0e-482928b4ba45" file="properties/${env}-config.yaml" />
-	<configuration-properties doc:name="Configuration properties" doc:id="85514a0f-2bc4-4472-beb8-2d2095966aed" file="properties/config.yaml" />		
+	<http:listener-config
+		name="super-ticket-papi-httpListenerConfig">
+		<http:listener-connection
+			host="0.0.0.0"
+			port="8081" />
+	</http:listener-config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="e2cf2823-ff9b-439c-b2a5-db5111b504ef" file="properties/${mule.env}-secure-config.yaml" key="encryption.key">
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<api-gateway:autodiscovery apiId="${api.instanceId}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="1177d2a9-0b85-4402-a09b-51ef4e0fea0d" flowRef="super-ticket-papi-main" />
 </mule>

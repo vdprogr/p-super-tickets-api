@@ -1,2 +1,6 @@
 http:
   port: "8081"
+  
+conn:
+  appClientId: "991ef9288c6d491591dd9ba32a4149b5"
+  appClientSecret: "1509ae3e9E434Dd3B5932edcF4B45073"

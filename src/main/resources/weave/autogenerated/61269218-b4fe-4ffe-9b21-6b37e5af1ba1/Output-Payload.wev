@@ -1,0 +1,7 @@
+%dw 2.0
+
+type auto_61269218_b4fe_4ffe_9b21_6b37e5af1ba1_Output_Payload = {
+  date_time?: String, 
+  _?: Any
+} {"description": "Response contains Movie Ticket details for a linked via BID."}
+

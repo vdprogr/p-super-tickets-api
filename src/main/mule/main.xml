@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="get-tickets-data-by-bid" doc:id="a8b5ed91-ce73-4c64-b8e1-3b11073f9da2" >
-		<ee:transform doc:name="Transform Message">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="mainFlow" doc:id="61269218-b4fe-4ffe-9b21-6b37e5af1ba1" >
+		<logger level="INFO" doc:name="Logger" doc:id="84ba4c67-de8f-4b90-b5a6-12fd51fc36a2" />
+	 <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="BID">attributes.uriParams.'BID'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -40,5 +47,7 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-	</flow>
+		<error-handler ref="errorError_Handler" />
+	
+</flow>
 </mule>

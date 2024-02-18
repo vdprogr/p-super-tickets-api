@@ -1,3 +1,6 @@
 api:
   instanceId: "19294327"
-  
+
+anypoint:
+  client_id: "5fa9c7b4d1624cd0b0aea1333f3531d5"
+  client_secret: "fd311f970C0947bC9e8Cbcd35E9b7efc"
